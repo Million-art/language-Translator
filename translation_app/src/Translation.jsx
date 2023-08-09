@@ -1,17 +1,19 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { languageOptions } from './LanguageOptions';
-
+ 
 const Translation = () => {
   const [inputText, setInputText] = useState('');
   const [outputText, setOutputText] = useState('');
   const [sourceLanguage, setSourceLanguage] = useState('en');
+   const [languageList, setLanguageList] = useState([]);
   const [targetLanguage, setTargetLanguage] = useState('en');
 
-  
+  useEffect(()=>{
+    axios.get(`https://libretranslate.de/languages`)
+    .then(response=>setLanguageList(response.data))
+  },[])
   const handleTranslate = () => {
-    // Translation logic is handled by the useEffect hook
-    axios
+     axios
       .post('https://libretranslate.de/translate', null, {
         params: {
           q: inputText,
@@ -44,8 +46,8 @@ const Translation = () => {
               value={sourceLanguage}
               onChange={(e) => setSourceLanguage(e.target.value)}
             >
-              {languageOptions.map((option) => (
-                <option key={option.id} value={option.id}>
+              {languageList.map((option) => (
+                <option key={option.code} value={option.code}>
                   {option.name}
                 </option>
               ))}
@@ -61,8 +63,8 @@ const Translation = () => {
               value={targetLanguage}
               onChange={(e) => setTargetLanguage(e.target.value)}
             >
-              {languageOptions.map((option) => (
-                <option key={option.id} value={option.id}>
+              {languageList.map((option) => (
+                <option key={option.code} value={option.code}>
                   {option.name}
                 </option>
               ))}

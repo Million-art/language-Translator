@@ -1,5 +1,5 @@
 
-import Translation from './components/Translation'
+import Translation from './Translation'
 import Navbar from "./components/Navbar"
 function App() {
  
